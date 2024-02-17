@@ -9,22 +9,21 @@ int main(int argc, char* argv[]) {
     if (argc != 2)
     {
         printf("Usage: %s <directory name>\n", argv[0]);
-        execl(shell, shell, NULL);
+        goto spawn;
     }
 
-    int nd = mkdir(argv[1], 0755);
-    if (nd == -1)
+    if (mkdir(argv[1], 0755) == -1)
     {
         perror("mkdir");
-        execl(shell, shell, NULL);
+        goto spawn;
     }
 
-    int ch = chdir(argv[1]);
-    if (ch == -1)
+    if (chdir(argv[1]) == -1)
     {
         perror("chdir");
-        execl(shell, shell, NULL);
+        goto spawn;
     }
 
-    execl(shell, shell, NULL);
+    spawn:
+        execl(shell, shell, NULL);
 }
